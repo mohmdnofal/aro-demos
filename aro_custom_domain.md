@@ -3,9 +3,11 @@ In this demo we will install an Azure Red Hat OpenShift cluster using a custom d
 
 
 1. First you need to register the provider to your subscription 
+```shell
 az provider register -n Microsoft.RedHatOpenShift --wait
 az provider register -n Microsoft.Compute --wait
 az provider register -n Microsoft.Storage --wait
+```
 
 2. Get the pull secret so you can use the Red Hat Cluster Manager Portal, [instructions here](https://docs.microsoft.com/en-gb/azure/openshift/tutorial-create-cluster#get-a-red-hat-pull-secret-optional)
 

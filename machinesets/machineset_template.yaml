@@ -1,0 +1,54 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  labels:
+    machine.openshift.io/cluster-api-cluster: arodemo-northeurope-c-b24pq
+    machine.openshift.io/cluster-api-machine-role: worker
+    machine.openshift.io/cluster-api-machine-type: worker
+  name: arodemo-northeurope-c-b24pq-worker-northeurope1
+  namespace: openshift-machine-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: arodemo-northeurope-c-b24pq
+      machine.openshift.io/cluster-api-machineset: arodemo-northeurope-c-b24pq-worker-northeurope1
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: arodemo-northeurope-c-b24pq
+        machine.openshift.io/cluster-api-machine-role: worker
+        machine.openshift.io/cluster-api-machine-type: worker
+        machine.openshift.io/cluster-api-machineset: arodemo-northeurope-c-b24pq-worker-northeurope1
+    spec:
+      metadata: {}
+      providerSpec:
+        value:
+          apiVersion: azureproviderconfig.openshift.io/v1beta1
+          credentialsSecret:
+            name: azure-cloud-credentials
+            namespace: openshift-machine-api
+          image:
+            offer: aro4
+            publisher: azureopenshift
+            resourceID: ""
+            sku: aro_48
+            version: 48.84.20210630
+          kind: AzureMachineProviderSpec
+          location: northeurope
+          metadata:
+          networkResourceGroup: arodemo-northeurope-cluster-master-rg
+          osDisk:
+            diskSizeGB: 128
+            managedDisk:
+              storageAccountType: Premium_LRS
+            osType: Linux
+          publicIP: false
+          publicLoadBalancer: arodemo-northeurope-c-b24pq
+          resourceGroup: arodemo-northeurope-cluster-nodes-rg
+          subnet: arodemo-northeurope-cluster-workers-subnet
+          userDataSecret:
+            name: worker-user-data
+          vmSize: Standard_D4s_v3
+          vnet: arodemo-northeurope-cluster-vnet
+          zone: "1"

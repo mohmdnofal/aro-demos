@@ -1,0 +1,27 @@
+apiVersion: "autoscaling.openshift.io/v1"
+kind: "ClusterAutoscaler"
+metadata:
+  name: "default"
+spec:
+  podPriorityThreshold: -10 
+  resourceLimits:
+    maxNodesTotal: 10 #total number of nodes that your number will scale out to, this includes the masters (although not part of the autoscaling) Assumption is that we are only using Standard D4s v3 VMs which comes with 4vCpu and 16GB Memory 
+    cores:
+      min: 24 # We keep a minimum of 3 nodes in the cluster (3 * 4vcpi = 12) 
+      max: 100 
+    memory:
+      min: 48 # you get the idea
+      max: 250 # max Memory 
+    gpus: #just here for illustration, we aren't using an GPU in this cluster 
+      - type: nvidia.com/gpu 
+        min: 0 
+        max: 16 
+      - type: amd.com/gpu 
+        min: 0 
+        max: 4 
+  scaleDown: 
+    enabled: true #scaling down is enabled 
+    delayAfterAdd: 10m #how long to wait for a scale in action after a scale out (10m is the default)
+    delayAfterDelete: 1m  #how long to wait after a scale in action 
+    delayAfterFailure: 30s #how long to wait for retries 
+    unneededTime: 5m #how long to wait to decide that a node is unnecessary 
